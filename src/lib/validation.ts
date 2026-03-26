@@ -1,11 +1,5 @@
 import { z } from "zod";
 
-export const phoneSchema = z
-  .string()
-  .min(10)
-  .transform((s) => s.replace(/\s/g, ""))
-  .refine((s) => /^\+?[1-9]\d{9,14}$/.test(s), "Invalid phone");
-
 export const bvnSchema = z.string().regex(/^\d{11}$/, "BVN must be 11 digits");
 
 export const orderCreateSchema = z.object({

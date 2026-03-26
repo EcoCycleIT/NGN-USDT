@@ -15,7 +15,7 @@ export async function GET() {
     .eq("id", user.id)
     .single();
   const origin = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-  const link = `${origin}/auth/signup?ref=${profile?.referral_code ?? ""}`;
+  const link = `${origin}/auth/signin?ref=${profile?.referral_code ?? ""}`;
   const { data: refs } = await supabase
     .from("referrals")
     .select("reward_ngn, created_at, referee_id")

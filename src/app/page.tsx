@@ -8,7 +8,7 @@ export default function HomePage() {
         <Link href="/exchange" className="hover:text-foreground">
           Exchange
         </Link>
-        <Link href="/auth/signup" className="hover:text-foreground">
+        <Link href="/auth/signin" className="hover:text-foreground">
           Sign in
         </Link>
         <Link href="/admin/dashboard" className="hover:text-foreground">
@@ -18,13 +18,13 @@ export default function HomePage() {
       <p className="text-sm font-medium uppercase tracking-widest text-primary">Supabase + Next.js 14</p>
       <h1 className="mt-4 text-4xl font-bold tracking-tight">NGN–USDT Exchange MVP</h1>
       <p className="mt-4 text-muted-foreground">
-        Phone OTP auth, Tier-1 KYC, live rates (SSE + Binance P2P blend), professional trading UI with
+        Email/password auth, Tier-1 KYC, live rates (SSE + Binance P2P blend), professional trading UI with
         chart & order book, market/limit/stop orders, payment proof URLs, custodial wallets, and admin
         approvals.
       </p>
       <div className="mt-10 flex flex-wrap justify-center gap-4">
         <Button asChild size="lg">
-          <Link href="/auth/signup">Get started</Link>
+          <Link href="/auth/signin">Get started</Link>
         </Button>
         <Button asChild variant="outline" size="lg">
           <Link href="/exchange">Open exchange</Link>

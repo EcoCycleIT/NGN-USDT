@@ -26,7 +26,7 @@ if (!g.__devStore) g.__devStore = { orders: [], wallets: {}, profiles: {} };
 const store = g.__devStore;
 
 export function devFallbackEnabled() {
-  return process.env.NODE_ENV !== "production" && process.env.ENABLE_DEV_OTP_BYPASS === "true";
+  return process.env.NODE_ENV !== "production" && process.env.ENABLE_DEV_DUMMY_AUTH === "true";
 }
 
 export function isMissingSchemaError(err: unknown): boolean {

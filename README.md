@@ -1,17 +1,17 @@
 # NGN–USDT Exchange (MVP)
 
-Next.js 14 (App Router), TypeScript, Tailwind, shadcn-style UI, Supabase Auth (phone OTP), PostgreSQL + RLS, live rates (Binance P2P blend + SSE stream), trading UI (chart, order book, order forms), and admin order approval.
+Next.js 14 (App Router), TypeScript, Tailwind, shadcn-style UI, Supabase Auth (email + password), PostgreSQL + RLS, live rates (Binance P2P blend + SSE stream), trading UI (chart, order book, order forms), and admin order approval.
 
 ## 1. Supabase
 
-Full checklist: **[docs/SUPABASE.md](./docs/SUPABASE.md)** (keys, auth URLs, phone provider, migrations, admin).
+Full checklist: **[docs/SUPABASE.md](./docs/SUPABASE.md)** (keys, auth URLs, email provider, migrations, admin).
 
 Quick version:
 
 1. Create a project at [supabase.com](https://supabase.com).
 2. Copy API keys into `.env.local` (from `.env.example`).
 3. Set **Authentication → URL Configuration** (Site URL + redirect `http://localhost:3000/auth/callback`).
-4. Enable **Phone** provider + SMS (e.g. Twilio).
+4. Enable **Email** provider (confirm-email optional for local dev).
 5. Apply migrations: `npx supabase login` → `npx supabase link --project-ref <ref>` → `npx supabase db push`, **or** run the three SQL files in `supabase/migrations/` in order in the SQL Editor.
 6. Promote admin: `update public.profiles set role = 'admin' where id = '<your auth user uuid>';`
 
@@ -31,7 +31,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000): **Sign in** (phone OTP) → **KYC** → **Exchange**.
+Open [http://localhost:3000](http://localhost:3000): **Sign in** (email + password or dev dummy users) → **KYC** → **Exchange**.
 
 ## 4. Notes
 

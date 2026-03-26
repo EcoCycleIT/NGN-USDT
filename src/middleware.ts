@@ -32,7 +32,7 @@ export async function middleware(request: NextRequest) {
 
   if (needsAuth && !user) {
     const url = request.nextUrl.clone();
-    url.pathname = "/auth/signup";
+    url.pathname = "/auth/signin";
     url.searchParams.set("next", pathname);
     return NextResponse.redirect(url);
   }
@@ -40,7 +40,7 @@ export async function middleware(request: NextRequest) {
   if (pathname.startsWith("/admin") && user) {
     if (
       process.env.NODE_ENV !== "production" &&
-      process.env.ENABLE_DEV_OTP_BYPASS === "true"
+      process.env.ENABLE_DEV_DUMMY_AUTH === "true"
     ) {
       return supabaseResponse;
     }

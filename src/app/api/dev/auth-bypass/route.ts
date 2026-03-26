@@ -4,13 +4,13 @@ import { ensureDevUser, setDevRole } from "@/lib/dev-fallback-store";
 
 type BypassRole = "user" | "admin";
 
-function devBypassEnabled() {
-  return process.env.NODE_ENV !== "production" && process.env.ENABLE_DEV_OTP_BYPASS === "true";
+function devDummyAuthEnabled() {
+  return process.env.NODE_ENV !== "production" && process.env.ENABLE_DEV_DUMMY_AUTH === "true";
 }
 
 export async function POST(req: Request) {
-  if (!devBypassEnabled()) {
-    return NextResponse.json({ error: "Dev OTP bypass disabled" }, { status: 403 });
+  if (!devDummyAuthEnabled()) {
+    return NextResponse.json({ error: "Dev dummy auth disabled" }, { status: 403 });
   }
 
   const body = (await req.json().catch(() => ({}))) as { role?: BypassRole };

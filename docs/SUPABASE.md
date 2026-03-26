@@ -4,7 +4,7 @@ Do this once per Supabase project.
 
 ## A. Create the project
 
-1. Go to [supabase.com/dashboard](https://supabase.com/dashboard) → **New project**.
+1. Go [supabase.com/dashboard](https://supabase.com/dashboard) → **New project**.
 2. Pick a region close to Nigeria if possible, set a database password, wait until the project is healthy.
 
 ## B. API keys (for the Next.js app)
@@ -23,7 +23,7 @@ copy .env.example .env.local
 
 (Edit `.env.local` on macOS/Linux: `cp .env.example .env.local`)
 
-## C. Auth URLs (required for phone OTP + callback)
+## C. Auth URLs + Email provider
 
 1. **Authentication** → **URL Configuration**
    - **Site URL**: `http://localhost:3000` (production: your real domain)
@@ -31,16 +31,9 @@ copy .env.example .env.local
      `http://localhost:3000/auth/callback`  
      (and your production callback URL when you deploy)
 
-2. **Authentication** → **Providers** → **Phone**
-   - Enable **Phone provider**
-   - Configure your SMS provider (Twilio, MessageBird, etc.) per Supabase docs  
-  - For Twilio, configure:
-    - `SUPABASE_AUTH_SMS_TWILIO_ACCOUNT_SID`
-    - `SUPABASE_AUTH_SMS_TWILIO_MESSAGE_SERVICE_SID`
-    - `SUPABASE_AUTH_SMS_TWILIO_AUTH_TOKEN`
-  - Push auth config to hosted Supabase after linking:
-    - `npx supabase config push --project-ref <YOUR_PROJECT_REF>`
-   - For **local testing**, Supabase can use [test OTP](https://supabase.com/docs/guides/auth/phone-login#testing) depending on your plan/settings
+2. **Authentication** → **Providers** → **Email**
+   - Keep **Email** enabled (the app uses **email + password** sign-in and sign-up).
+   - For local development, you can turn off “Confirm email” under **Authentication** → **Providers** → **Email** so new accounts can sign in immediately.
 
 ## D. Apply database migrations
 
@@ -66,7 +59,7 @@ Migrations live in `supabase/migrations/` and run in filename order.
 
 ## E. Admin user
 
-After you sign up once with phone OTP:
+After you create an account (email + password on `/auth/signin`):
 
 1. **Authentication** → **Users** → copy your user **UUID**
 2. **SQL Editor**:
@@ -83,22 +76,21 @@ where id = 'YOUR_USER_UUID';
 npm run dev
 ```
 
-Open [http://localhost:3000/auth/signup](http://localhost:3000/auth/signup), complete OTP, KYC, then Exchange.
+Open [http://localhost:3000/auth/signin](http://localhost:3000/auth/signin), sign in or sign up, complete KYC, then Exchange.
 
 If anything fails, check the browser console and Supabase **Logs** → **Auth** / **Postgres**.
 
-## G. Dev-only OTP bypass (optional)
+## G. Dev-only dummy users (optional)
 
-For local smoke tests without SMS delivery:
+For local smoke tests without creating a real account:
 
 1. Set in `.env.local`:
-   - `ENABLE_DEV_OTP_BYPASS=true`
-   - `NEXT_PUBLIC_ENABLE_DEV_OTP_BYPASS=true`
+   - `ENABLE_DEV_DUMMY_AUTH=true`
+   - `NEXT_PUBLIC_ENABLE_DEV_DUMMY_AUTH=true`
    - `DEV_BYPASS_PASSWORD=<strong local password>`
-2. Open `/auth/verify` and use:
+2. Open `/auth/signin` and use:
    - **Login as Dev User**
    - **Login as Dev Admin**
 
-This creates/updates test users (`dev-user@local.test`, `dev-admin@local.test`) via service role and signs in with email/password.
+This creates/updates test users (`dev-user@local.test`, `dev-admin@local.test`) via service role and signs in with email/password.  
 Keep this disabled outside local development.
-

@@ -27,7 +27,7 @@ let afterUsdt = null;
 
 try {
   // Step 1: Dev user login via bypass
-  await page.goto(`${base}/auth/verify`, { waitUntil: "domcontentloaded" });
+  await page.goto(`${base}/auth/signin`, { waitUntil: "domcontentloaded" });
   if (await clickIfVisible(page, 'button:has-text("Login as Dev User")')) {
     await page.waitForURL(/\/(kyc|admin\/orders|exchange)/, { timeout: 15000 });
     mark("1) Dev bypass login as user", "PASS", page.url());
@@ -37,8 +37,8 @@ try {
 
   // Step 2: KYC submit (best-effort if on /kyc)
   await page.goto(`${base}/kyc`, { waitUntil: "domcontentloaded" });
-  if (page.url().includes("/auth/signup")) {
-    mark("2) KYC access", "FAIL", "Redirected to signup (not authenticated)");
+  if (page.url().includes("/auth/signin")) {
+    mark("2) KYC access", "FAIL", "Redirected to sign-in (not authenticated)");
   } else {
     await page.fill('input[required]', "Dev User");
     await page.fill('input[inputmode="numeric"]', "12345678901");
@@ -105,7 +105,7 @@ try {
   }
 
   // Step 6: login as admin via bypass
-  await page.goto(`${base}/auth/verify`, { waitUntil: "domcontentloaded" });
+  await page.goto(`${base}/auth/signin`, { waitUntil: "domcontentloaded" });
   if (await clickIfVisible(page, 'button:has-text("Login as Dev Admin")')) {
     await page.waitForURL(/\/(admin\/orders|kyc|exchange)/, { timeout: 15000 });
     mark("6) Dev bypass login as admin", "PASS", page.url());
@@ -138,7 +138,7 @@ try {
   }
 
   // Step 8: verify filled + wallet increase as user
-  await page.goto(`${base}/auth/verify`, { waitUntil: "domcontentloaded" });
+  await page.goto(`${base}/auth/signin`, { waitUntil: "domcontentloaded" });
   await clickIfVisible(page, 'button:has-text("Login as Dev User")');
   await page.waitForTimeout(800);
 
