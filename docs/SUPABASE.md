@@ -72,16 +72,25 @@ Migrations live in `supabase/migrations/` and run in filename order.
 
 ## E. Admin user
 
-After you create an account (email + password on `/auth/signin`):
+**Where the account is created**
 
-1. **Authentication** → **Users** → copy your user **UUID**
-2. **SQL Editor**:
+1. A person signs up through your app: **`/auth/signin`** → **Sign up** (email + password). That calls Supabase Auth and creates a row in **`auth.users`** (visible in the dashboard as **Authentication** → **Users**).
+2. After migrations are applied, the trigger **`on_auth_user_created`** (in `supabase/migrations/20260325000000_exchange_core.sql`) automatically inserts matching rows in **`public.profiles`** and **`public.wallets`**, with **`profiles.role` defaulting to `'user'`**.
+
+There is no separate “admin account” signup. You promote an existing user to admin in the database.
+
+**Promote one user to admin**
+
+1. **Authentication** → **Users** → find the account → copy the user’s **UUID** (same as `profiles.id`).
+2. **SQL Editor** → run (replace the UUID):
 
 ```sql
 update public.profiles
 set role = 'admin'
 where id = 'YOUR_USER_UUID';
 ```
+
+**Alternative:** create the user in **Authentication** → **Users** → **Add user** (email + password) in the dashboard; the same trigger still creates `profiles` / `wallets`, then run the `update` above with that user’s UUID.
 
 ## F. Verify
 
