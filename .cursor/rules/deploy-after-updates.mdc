@@ -1,0 +1,14 @@
+---
+description: After accepted changes, push to GitHub and deploy to Vercel
+alwaysApply: true
+---
+
+# Ship accepted updates
+
+When the user accepts or confirms a code change for this app (ngn-exchange), finish by shipping it unless they opt out in that turn.
+
+1. **Repository root**: `ngn-exchange` (where `.git` lives).
+2. **GitHub**: Stage only intentional files (never `.env`). Commit with a short, accurate message. Push to `origin` on `main` — remote is [EcoCycleIT/NGN-USDT](https://github.com/EcoCycleIT/NGN-USDT).
+3. **Vercel**: From the same folder, run production deploy: `npx vercel --prod --yes` (project is linked under `ecocycleits-projects/ngn-exchange`).
+
+If there is nothing to commit, still run deploy when the user asked to ship. If push or deploy fails, fix or report and retry when reasonable.
