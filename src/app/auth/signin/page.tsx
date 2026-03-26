@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import Link from "next/link";
 import { z } from "zod";
+import { getPublicSiteOrigin } from "@/lib/app-url";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -53,7 +54,9 @@ function SignInForm() {
       const { error: err } = await supabase.auth.signUp({
         email: emailParsed.data,
         password: passParsed.data,
-        options: { emailRedirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(safeNext)}` },
+        options: {
+          emailRedirectTo: `${getPublicSiteOrigin()}/auth/callback?next=${encodeURIComponent(safeNext)}`,
+        },
       });
       setLoading(false);
       if (err) {

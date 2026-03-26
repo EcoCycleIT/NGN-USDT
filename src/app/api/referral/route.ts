@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { getPublicSiteOrigin } from "@/lib/app-url";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -14,8 +15,7 @@ export async function GET() {
     .select("referral_code")
     .eq("id", user.id)
     .single();
-  const origin = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-  const link = `${origin}/auth/signin?ref=${profile?.referral_code ?? ""}`;
+  const link = `${getPublicSiteOrigin()}/auth/signin?ref=${profile?.referral_code ?? ""}`;
   const { data: refs } = await supabase
     .from("referrals")
     .select("reward_ngn, created_at, referee_id")

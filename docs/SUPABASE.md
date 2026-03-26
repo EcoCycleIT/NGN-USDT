@@ -26,10 +26,23 @@ copy .env.example .env.local
 ## C. Auth URLs + Email provider
 
 1. **Authentication** → **URL Configuration**
-   - **Site URL**: `http://localhost:3000` (production: your real domain)
-   - **Redirect URLs**: add  
-     `http://localhost:3000/auth/callback`  
-     (and your production callback URL when you deploy)
+
+   **Local development**
+
+   - **Site URL**: `http://localhost:3000`
+   - **Redirect URLs**: `http://localhost:3000/auth/callback`
+
+   **Production (e.g. Vercel)** — required so confirmation emails do not point at localhost
+
+   - In Vercel → your project → **Settings** → **Environment Variables** (Production), set  
+     `NEXT_PUBLIC_APP_URL` = `https://YOUR_DEPLOYMENT.vercel.app` (no trailing slash), then redeploy.
+   - In Supabase → **Authentication** → **URL Configuration**:
+     - **Site URL**: use that same production URL (`https://YOUR_DEPLOYMENT.vercel.app`).
+     - **Redirect URLs**: add  
+       `https://YOUR_DEPLOYMENT.vercel.app/auth/callback`  
+       (keep the localhost callback too if you still develop locally).
+
+   The app sends `emailRedirectTo` using `NEXT_PUBLIC_APP_URL` when set; Supabase must allow that URL and use a matching **Site URL** so signup confirmation links complete on the live site.
 
 2. **Authentication** → **Providers** → **Email**
    - Keep **Email** enabled (the app uses **email + password** sign-in and sign-up).
